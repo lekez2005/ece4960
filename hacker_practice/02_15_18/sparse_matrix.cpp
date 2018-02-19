@@ -22,7 +22,7 @@ int SMatrix<T>::retrieveElement(int row, int col, T *element) {
 
 template <class T>
 void SMatrix<T>::print(){
-    int element = 0;
+    T element = 0;
     for (int i = 0; i < rowLen; i++) {
         for (int j = 0; j < colLen; j++) {
             retrieveElement(i, j, &element);
@@ -46,6 +46,10 @@ int main(){
 
     SMatrix<int> s(rowLen, colLen, value, rowPtr, colInd);
     s.print();
+
+    double value_d [] = {1.6, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}; 
+    SMatrix<double> sf(rowLen, colLen, value_d, rowPtr, colInd);
+    sf.print();
 
     return 0;
 }
