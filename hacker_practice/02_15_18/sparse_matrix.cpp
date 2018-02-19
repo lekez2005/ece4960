@@ -1,39 +1,40 @@
 #include <cstdio>
+#include <iostream>
 #include <cmath>
+#include "sparse_matrix.h"
 
-typedef struct Matrix {
-    int rowLen;
-    int colLen;
-    int *value;
-    int *rowPtr;
-    int *colInd;
-} Matrix;
+template <class T>
+int SMatrix<T>::retrieveElement(int row, int col, T *element) {
+    int colOffset = rowPtr[row]; // skip to this column
+    T rowSize = rowPtr[row+1] - rowPtr[row];
 
-int retrieveElement(Matrix* matrix, int row, int col) {
-    int rowLen = matrix->rowPtr[row+1] - matrix->rowPtr[row];
-    int rowPtr = matrix->rowPtr[row];
-    for (int i = 0; i < rowLen; i ++) {
-        if (matrix->colInd[rowPtr + i] == col) {
-            return matrix->value[rowPtr + i];
+    *element = 0;
+
+    for (int i = 0; i < rowSize; i++) {
+        if (colInd[colOffset + i] == col) {
+            *element = value[colOffset + i];
+            break;
         }
     }
-    return 0;
+    return M_SUCCESS;
 }
 
-void printMatrix(Matrix* matrix) {
-    for (int i = 0; i < matrix->rowLen; i++) {
-        for (int j = 0; j < matrix->colLen; j++) {
-            int element = retrieveElement(matrix, i, j);
-            if (j != matrix->colLen) {
-                printf("%d, \t", element);
+
+template <class T>
+void SMatrix<T>::print(){
+    int element = 0;
+    for (int i = 0; i < rowLen; i++) {
+        for (int j = 0; j < colLen; j++) {
+            retrieveElement(i, j, &element);
+            if (j != colLen) {
+                std::cout << element << ", \t";
             }else {
-                printf("%d \n", element);
+                std::cout << element << std::endl;
             }
         }
         printf("\n");
     }
 }
-
 
 int main(){
     //struct Matrix matrix;
@@ -43,10 +44,8 @@ int main(){
     int rowPtr [] = {0, 3, 6, 9, 10, 12};
     int colInd [] = {0, 1, 4, 0, 1, 2, 1, 2, 4, 3, 0, 4};
 
-    Matrix matrix = {rowLen, colLen, value, rowPtr, colInd};
-
-    printMatrix(&matrix);
-
+    SMatrix<int> s(rowLen, colLen, value, rowPtr, colInd);
+    s.print();
 
     return 0;
 }
