@@ -1,23 +1,35 @@
-#define M_SUCCESS 0
+#ifndef SMATRIX_H
+#define SMATRIX_H
 
-template<class T> class SMatrix{
-    public:
-        int rowLen;
-        int colLen;
-        T *value;
+#include "base_matrix.h"
+#include <iostream> 
+
+template<class T>
+class SMatrix : public BMatrix<T>{
+    private:
         int *rowPtr;
         int *colInd;
+        T *value;
+        void initialize_from_mat(const BMatrix<T> &inMat, T tolerance); 
+        void initialize(int rowLen, int colLen, int valLength, T *value, int *rowPtr, int *colInd);
+    public:
+        int retrieveElement(int row, int col, T *element) const;
+        int getRow(int row, T *res) const;
+        int getCol(int col, T *res) const;
+        int productAx(T *x, T *res) const;
+        bool isZero(T element, T tolerance) const;
 
-        SMatrix(int rowLen, int colLen, T *value, int *rowPtr, int *colInd):
-            rowLen(rowLen),
-            colLen(colLen),
-            value(value),
-            rowPtr(rowPtr),
-            colInd(colInd)
-        {}
+        ~SMatrix(){
+            //delete [] this->value;
+            //delete [] this->rowPtr;
+            //delete [] this->colInd;
+        }
+        SMatrix(int rowLen, int colLen, int valLength, T *value, int *rowPtr, int *colInd);
+        SMatrix(const BMatrix<T> &inMat);
+        SMatrix(const BMatrix<T> &inMat, T tolerance);
 
-        int retrieveElement(int row, int col, T *element);
-        void print();
-        int productAx(T *x, T *res);
 };
 
+#include "sparse_matrix.cpp"
+
+#endif
