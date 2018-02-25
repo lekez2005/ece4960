@@ -15,6 +15,11 @@ class FMatrix : public BMatrix<T>{
         int productAx(T *x, T *res) const;
 
         FMatrix(int rowLen, int numel, T *value);
+        FMatrix(const BMatrix<T> &inMat);
+
+        ~FMatrix(){
+            delete [] this->value;
+        }
 
 };
 

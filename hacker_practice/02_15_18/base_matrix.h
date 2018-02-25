@@ -23,7 +23,7 @@ class BMatrix{
         int getRowLen() const { return rowLen; };
         int getColLen() const { return colLen; };
         int getNumel() const { return numel; };
-        int getNullElement() const { return 0; };
+        T getNullElement() const { return 0; };
 
         int productAx(T *x, T *res) const;
 

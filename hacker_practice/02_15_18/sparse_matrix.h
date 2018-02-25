@@ -20,9 +20,9 @@ class SMatrix : public BMatrix<T>{
         bool isZero(T element, T tolerance) const;
 
         ~SMatrix(){
-            //delete [] this->value;
-            //delete [] this->rowPtr;
-            //delete [] this->colInd;
+            delete [] this->value;
+            delete [] this->rowPtr;
+            delete [] this->colInd;
         }
         SMatrix(int rowLen, int colLen, int valLength, T *value, int *rowPtr, int *colInd);
         SMatrix(const BMatrix<T> &inMat);

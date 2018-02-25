@@ -25,5 +25,9 @@ int main(){
     SMatrix<double> s1(fm, 0.01);
     s1.print();
 
+    printf("\n");
+    FMatrix<double> f2(s1);
+    f2.print();
+
     return 0;
 }
