@@ -52,7 +52,7 @@ class BMatrix{
         }
 
         void printMd(){
-            print(" | ", "|", " |\n");
+            print(" , ", "", "   \n");
         }
 
 

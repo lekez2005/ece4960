@@ -90,27 +90,27 @@ int main(){
 
     printf("### Part 2 \n");
 
-    printf("Sum using product = %g, Sum using values = %g\n", sumProduct, sumValues);
-    printf("Residue = %g\n", std::abs(sumProduct-sumValues));
+    printf("Sum using product = %g, Sum using values = %g  \n", sumProduct, sumValues);
+    printf("Residue = %g  \n", std::abs(sumProduct-sumValues));
 
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &stop);
 
     double elapsed = (stop.tv_sec - start.tv_sec) * 1e6 + (stop.tv_nsec - start.tv_nsec) / 1e3;    // in microseconds
-    printf("Time elapsed = %g ms \n", elapsed/1000);
+    printf("Time elapsed = %g ms  \n", elapsed/1000);
 
-    printf("Peak Memory usage using /proc/self/status -> VmPeak :\n"); 
+    printf("Peak Memory usage using /proc/self/status -> VmPeak :  \n"); 
 
     std::ifstream statusFile( "/proc/self/status", std::ifstream::in);
     bool found = 0;
     std::string statusLine;
     while (!found){
         if (! std::getline(statusFile, statusLine) ){
-            printf("Memory usage not found\n");
+            printf("Memory usage not found  \n");
             found = true;
         }
         //std::cout << statusLine << std::endl;
         if (statusLine.find("VmPeak:") !=std::string::npos){
-            std::cout << statusLine << std::endl;
+            std::cout << statusLine << "  \n";
             found = true;
         }
     }
