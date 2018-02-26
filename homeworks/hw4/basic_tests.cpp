@@ -19,7 +19,6 @@ int main(){
     double value_d [] = {1.6, 0.001, 3, 4, 0.02, 6, 0.00001, 8, 9, 10, 11, 12}; 
     int frowLen = 4;
     FMatrix<double> fm(frowLen, numel, value_d);
-    int fcolLen = fm.getColLen();
     printf("\n");
     fm.print();
 
@@ -63,7 +62,6 @@ int main(){
     resMatrix2.print();
 
     delete [] x;
-
 
     return 0;
 }

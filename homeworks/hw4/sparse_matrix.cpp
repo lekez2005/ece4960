@@ -205,7 +205,7 @@ int SMatrix<T>::rowScale(int i, int j, T a){
     this->getRow(j, rowJ);
     for (int col = 0; col < this->colLen; col++){
        T res = a*rowI[col] + rowJ[col];
-        if (! isZero(rowJ[col] )){
+        if (! isZero(res )){
             rowJ[lenAfter] = res;
             newCol[lenAfter] = col;
             lenAfter++;
