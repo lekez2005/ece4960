@@ -6,4 +6,5 @@
 !*.m
 !*.md
 !*.py
+!Makefile
 !*/
