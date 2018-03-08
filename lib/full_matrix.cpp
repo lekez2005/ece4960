@@ -80,6 +80,8 @@ int FMatrix<T>::getRow(int row, T *res) const{
 
 template<class T>
 int FMatrix<T>::getCol(int col, T *res) const{
+    for (int row = 0; row < this->colLen; row++)
+        res[row] = this->value[row*this->colLen+col];
     return M_SUCCESS;
 }
 

@@ -147,8 +147,15 @@ int SMatrix<T>::getRow(int row, T *res) const {
 
 
 template <class T>
-int SMatrix<T>::getCol(int row, T *res) const {
-    return 0;
+int SMatrix<T>::getCol(int col, T *res) const {
+    std::fill(res, res + this->rowLen, this->getNullElement());
+    for (int row = 0; row < this->rowLen; row++){
+        for (int offset = this->rowPtr[row]; offset < this->rowPtr[row+1]; offset++) {
+            if (this->colInd[offset] == col)
+                res[row] = this->value[offset];
+        }
+    }
+    return M_SUCCESS;
 }
 
 template <class T>
