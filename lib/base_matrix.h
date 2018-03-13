@@ -21,14 +21,14 @@ class BMatrix{
         virtual int getCol(int row, T *res) const = 0;
         virtual ~BMatrix(){};
 
-        int getRowLen() const { return rowLen; };
-        int getColLen() const { return colLen; };
-        int getNumel() const { return numel; };
-        T getNullElement() const { return 0; };
+        virtual int getRowLen() const { return rowLen; };
+        virtual int getColLen() const { return colLen; };
+        virtual int getNumel() const { return numel; };
+        virtual T getNullElement() const { return 0; };
 
-        int productAx(const T *x, T *res) const;
+        virtual int productAx(const T *x, T *res) const = 0;
 
-        void print(const char* delimeter, const char* lineStart, const char* lineEnd){
+        virtual void print(const char* delimeter, const char* lineStart, const char* lineEnd){
             T element = getNullElement();
             for (int i = 0; i < rowLen; i++) {
                 std::cout << lineStart;
