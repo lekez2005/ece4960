@@ -10,6 +10,15 @@ double f_prime_exp(double x){
     return 50*std::exp(50*x);
 }
 
+double f_prime_exp_quasi(double x){
+    double delta_x = 0.0001*x;
+    if (std::fabs(x) > 1e-20){
+        return (f_x_exp(x+delta_x)-f_x_exp(x))/delta_x;
+    }else{
+        return 0;
+    }
+}
+
 double f_x_cos(double x){
     return x - std::cos(x);
 }
@@ -18,7 +27,7 @@ double f_prime_cos(double x){
     return 1 + std::sin(x);
 }
 
-double fixed_t(double *x, double *del_x, double *t, double curr_fx_val, 
+int fixed_t(double *x, double *del_x, double *t, double curr_fx_val, 
         double (*f_x)(double), double (*f_prime)(double)){
     *del_x = -curr_fx_val/f_prime(*x);
     *t = 1;
@@ -26,7 +35,7 @@ double fixed_t(double *x, double *del_x, double *t, double curr_fx_val,
 }
 
 
-double variable_t(double *x, double *del_x, double *t, double curr_fx_val, 
+int variable_t(double *x, double *del_x, double *t, double curr_fx_val, 
         double (*f_x)(double), double (*f_prime)(double)){
     double del_fx = -curr_fx_val/f_prime(*x);
     double temp_x = *x;
@@ -41,6 +50,10 @@ double variable_t(double *x, double *del_x, double *t, double curr_fx_val,
         i--;
     }
     *x = temp_x;
+    if (i <= -20)
+        return -1; // max iterations reached
+    else
+        return 0;
 }
 
 void newton(double x_0, double (*f_x)(double), double (*f_prime)(double), bool fixed){
@@ -51,31 +64,32 @@ void newton(double x_0, double (*f_x)(double), double (*f_prime)(double), bool f
     double del_x = 0;
     double x = x_0;
     double f_k = f_x(x);
-    printf("k \t\t x_k \t \t delta_x \t t \t \t f_x\n"); 
-    printf("%3d \t %10g \t \t -  \t\t - \t %10g \n", 0, x, f_k);
+    printf("%8s \t %8s \t %8s \t %8s \t %8s\n", "k", "x_k", "delta_x", "t", "f_x"); 
+    printf("%8s \t %8g \t %8s \t %8s \t %8g\n", "0", x, "-", "-", f_k); 
     while (!solved && iterations < max_iterations){
+        int status;
         if (fixed)
-            fixed_t(&x, &del_x, &t, f_k, f_x, f_prime);
+            status = fixed_t(&x, &del_x, &t, f_k, f_x, f_prime);
         else
-            variable_t(&x, &del_x, &t, f_k, f_x, f_prime);
+            status = variable_t(&x, &del_x, &t, f_k, f_x, f_prime);
+
+        if (status == -1){
+            printf("Minimum step size does not result in reduction in f. Terminating ...\n");
+            return;
+        }
         f_k = f_x(x);
-        printf("%3d \t %10g \t %10g \t %10g \t %10g \n", iterations, x, del_x, t, f_k);
+        printf("%8d \t %8g \t %8g \t %8g \t %8g \n", iterations, x, del_x, t, f_k);
         iterations++;
-        if (std::abs(del_x/x) < 1e-7)
+        if (std::abs(del_x) < 1e-15)
             solved = true;
     }
 }
 
 int main(){
-    bool fixed = true;
-
-    printf("\n Newton with Line Search \n");
-    printf("Newton for cos, x(0) = 3 Fixed step size t = 1 \n");
-    newton(3, f_x_cos, f_prime_cos, true);
-
-    fixed = false;
-    printf("\nLine Search Newton for cos, x(0) = 10 \n");
-    newton(10, f_x_cos, f_prime_cos, false);
-    printf("\nLine Search Newton exp(50x)-1, x(0) = 10 \n");
-    newton(10, f_x_exp, f_prime_exp, false);
+    printf("\nQuasi-Newton With Line Search\n");
+    bool fixed = false;
+    printf("\nNewton exp(50x)-1, x(0) = 1 \n");
+    newton(1, f_x_exp, f_prime_exp, false);
+    printf("\nQuasi-Newton exp(50x)-1, x(0) = 1 \n");
+    newton(1, f_x_exp, f_prime_exp_quasi, false);
 }
