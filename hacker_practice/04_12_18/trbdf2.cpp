@@ -102,7 +102,7 @@ int main() {
         printf("%10g \t %10g \t %10g \t %10g \t %10g \t %10g \t %10g \n", t, x_real, x_trbdf, x_rk4,
                 std::fabs(errbdf/x_real)*100, std::fabs(err34/x_real)*100, time_step);
         x_trbdf = x_trbdf_temp;
-        h = time_step;
+        //h = time_step;
 
     }
 
